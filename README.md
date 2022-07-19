@@ -1,1 +1,2 @@
-O jogo Anamnese foi criado, na linguagem C, por alunos da disciplina de Fundamentos de Programação, do curso Sistemas de Informação da Universidade Federal de Itajubá (UNIFEI).
+# Versão Final Anamnese
+O jogo Anamnese foi criado, na linguagem C, por alunos da disciplina de Fundamentos de Programação, do curso Sistemas de Informação da Universidade Federal de Itajubá (UNIFEI). Além do código da Versão final do jogo, também foi executado a documentação do programa, explicando os passos da criação, incluindo, também, um cronograma. Ademais, o jogo foi implementado no Sistema Operacional Windows, por isso algumas funções podem não funcionar como o esperado em outros Sisemas Operacionais.
