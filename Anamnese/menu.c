@@ -1,7 +1,7 @@
 /**************************************************************************
     Jogo Anamnese
     Autores: Huandy Calini, Letícia Vitória, Luara Perilli e Luis Damasceno
-    Data da última atualização: 20/06/2022
+    Data da última atualização: 18/07/2022
 ***************************************************************************/
 
 // Definição de bibiblioteca
@@ -10,7 +10,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
-#include <windows.h>
+#include <Windows.h>
 #include "menu.h"
 #include "jogo.h"
 
@@ -19,7 +19,7 @@
 /********************************************************* 
   Função para transformar letras minúsculas em maiúsculas
   Parâmetros: um parametro do tipo caracter
-  Saída: a mesma letra mas em maiúsculo char
+  Retorno: a mesma letra mas em maiúsculo (char)
 **********************************************************/
 char letra_maiuscula(char opcao) {
   // Processo de transformação da letra para maiúsculo
@@ -29,33 +29,35 @@ char letra_maiuscula(char opcao) {
 
 /***********************************************
     Função para executar as escolhar do usuário
-    Parâmetros: caracter
-    Saída: void
+    Parâmetros: caracter e GAMER (struct)
+    Retorno: não possui retorno (void)
 ***********************************************/
-void menu(char escolha, GAMER *jogador, FILE *classificacao) {
+void menu(char escolha, GAMER *jogador) {
     // Declaração de variável
     int voltar_menu;
     char sair;
 
-    // Estrutura condicional switch case responsável pela exibição da escolha do usuário
+    // Estrutura condicional switch case responsável pela exibição da escolha do jogador
     switch (escolha)
     {
         // Opção para executar o jogo
         case 'J':
-            // Do while loop controlador da exibição do jogo
-            jogo(jogador, classificacao);
+            // Chamada de função para executar o jogo
+            jogo(jogador);
         break;
-
 
         // Opção para ver o ranking
         case 'R':
             // Do while loop controlador da exibição do ranking
             do
             {
+                // Função para limpar o terminal
                 system("cls");
+                // Chamada de função para exibir o ranking (retorna o numero 1 para voltar ao menu)
                 voltar_menu = ranking();
+                // Função para limpar o terminal
                 system("cls");
-
+                
             } while (voltar_menu != 1);
         break;
 
@@ -64,6 +66,7 @@ void menu(char escolha, GAMER *jogador, FILE *classificacao) {
             // Do while loop controlador da exibição das instruções
             do
             {
+                // Chamada de função para exibir as instruções (retorna o numero 1 para voltar ao menu)
                 voltar_menu = instrucoes();
                 
             } while (voltar_menu != 1);
@@ -74,6 +77,7 @@ void menu(char escolha, GAMER *jogador, FILE *classificacao) {
             // Do while loop controlador da exibição dos créditos
             do
             {
+                // Chamada de função para exibir os créditos (retorna o numero 1 para voltar ao menu)
                 voltar_menu = credito();
                 
             } while (voltar_menu != 1);
@@ -96,6 +100,7 @@ void menu(char escolha, GAMER *jogador, FILE *classificacao) {
             // Do while loop controldor da exibição da opção inválida
             do
             {
+                // Chamada de função para exibir mensagem de opção inválida (retorna o numero 1 para voltar ao menu)
                 voltar_menu = opcao_invalida();
                 
             } while (voltar_menu != 1);
@@ -106,7 +111,7 @@ void menu(char escolha, GAMER *jogador, FILE *classificacao) {
 /*****************************
     Função para voltar ao menu
     Parâmetros: nenhum
-    Saída: inteiro
+    Retorno: inteiro
 ******************************/
 int voltar() {
     // Declaração de variável
@@ -121,23 +126,31 @@ int voltar() {
 /********************************
     Função para exibir o ranking
     Parâmetros: nenhum
-    Saída: inteiro
+    Retorno: inteiro
 *********************************/
 int ranking(){
+    // Declarção de variáveis
     int voltar_menu = 0;
 
     char nome[40];
     int ponto;
     int sequencia;
 
-    FILE *class;
+    // Ponteiro para o arquivo
+    FILE *class_r;
 
-    class = fopen("ranking.txt", "r");
+    // Função para abrir o arquivo
+    class_r = fopen("ranking.txt", "r");
 
-    while((fscanf(class, "%s %d %d\n", nome, &ponto, &sequencia))!=EOF) {
+    // While loop para exibir os dados contidos no arquivo
+    while((fscanf(class_r, "%s %d %d\n", nome, &ponto, &sequencia))!=EOF) {
         printf("Nome:%s \nPonto:%d \nMaior sequencia decorada:%d\n\n", nome, ponto, sequencia);
     }
 
+    // Função para fechar o arquivo
+    fclose(class_r);
+
+    // Chamada da função que retorna o inteiro para voltar ao menu
     voltar_menu = voltar();
 
     return voltar_menu;
@@ -147,7 +160,7 @@ int ranking(){
 /********************************
     Função para exibir instruções
     Parâmetros: nenhum
-    Saída: inteiro
+    Retorno: inteiro
 *********************************/
 int instrucoes() {
     // Decaração da variável
@@ -162,9 +175,11 @@ int instrucoes() {
     printf("------------------------------------------------------------------------\n");
     printf("\n  1. O jogador deve escolher o tamanho da sequencia que sera decorada;\n");
     printf("  2. O jogador deve reproduzir a sequencia de numeros na ordem correta;\n");
-    printf("  3. O jogo termina caso o jogador cometa um erro ou opta por encerrar.\n\n");
+    printf("  3. A cada sequencia correta o jogador acrescenta pontos a seu score;\n");
+    printf("  4. O jogo termina caso o jogador cometa um erro ou decida parar.\n\n");
     printf("------------------------------------------------------------------------\n");
 
+    // Chamada da função que retorna o inteiro para voltar ao menu
     voltar_menu = voltar();
 
     return voltar_menu;
@@ -173,7 +188,7 @@ int instrucoes() {
 /*********************************
     Função para exibir os créditos
     Parâmetros: nenhum
-    Saída: inteiro
+    Retorno: inteiro
 **********************************/
 int credito() {
     // Declaração de variável
@@ -193,6 +208,7 @@ int credito() {
     printf(" e deve ser utilizado como ferramenta educacional e de entretenimento.\n\n");
     printf("----------------------------------------------------------------------------------------------------\n");
 
+    // Chamada da função que retorna o inteiro para voltar ao menu
     voltar_menu = voltar();
 
     return voltar_menu;
@@ -201,7 +217,7 @@ int credito() {
 /**************************************************
     Função para exibir mensagem para opção inválida
     Parâmetros: nenhum
-    Saída: inteiro
+    Retorno: inteiro
 ***************************************************/
 int opcao_invalida() {
     // Declaração de variável
@@ -215,6 +231,7 @@ int opcao_invalida() {
     printf("|       Opcao invalida       |\n");
     printf(" ----------------------------\n");
     
+    // Chamada da função que retorna o inteiro para voltar ao menu
     voltar_menu = voltar();
 
     return voltar_menu;
